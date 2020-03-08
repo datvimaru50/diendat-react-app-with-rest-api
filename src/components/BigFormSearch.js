@@ -94,7 +94,7 @@ export default class BigFormSearch extends React.Component {
 
   function Hit(props) {
     return (
-        <a href={props.hit.link}>
+        <a href={`/${props.hit.slug}`}>
           <Highlight attribute="title.rendered" hit={props.hit} />
         </a>
     );
