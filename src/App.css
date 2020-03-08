@@ -135,6 +135,11 @@ header #mv-breadcrumb{
 /* ======== HEADER ======== */
 header{
   background-color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  border-bottom: 1px solid #e4e4e4;
+  box-shadow: 1px 1px 4px 0px #c7c7c7;
 }
 header .menu-bar{
   padding-top: 20px;

@@ -10,29 +10,36 @@ import {
 
 import Breadcrumb from './Breadcrumb';
 
-const ListPostsInCategory = (props) => {
+const ListPostsByTaxonomy = (props) => {
     // State hook !
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [newsItems, setNewsItems] = useState([]);
-    const [catId, setCatId] = useState(1);
+
+    const [taxonomyId, setTaxonomyId] = useState(1);
 
     const [totalPages, setTotalPages] = useState(0);
 
-    let { slug, pageNo } = useParams();
+    let { taxonomy, slug, pageNo } = useParams();
     // Nếu mới vào trang liệt kê, chưa bấm phân trang thì mặc định pageNo = 1
+
     if(!pageNo) pageNo = 1;
 
     function fetchData() {
         // Gọi API theo slug của chuyên mục để lấy ID & tên chuyên mục
-        fetch(_CONFIG.domain + _CONFIG.api + _CONFIG.categories_router + `?slug=${slug}&_fields=name,id`)
+        fetch(_CONFIG.domain + _CONFIG.api + `${taxonomy}?slug=${slug}&_fields=name,id`)
         .then(
             res => res.json()
         ).then((result) => {
-            setCatId(result[0]['id']);
-            let options = `?page=${pageNo}&categories=${result[0]['id']}&order=${props.order}&_fields=${props.fields}`;
-
-            return fetch(_CONFIG.domain + _CONFIG.api + _CONFIG.posts_router + options)
+            if (result.length === 0){
+                document.location.pathname = 'error'
+            } else {
+                setTaxonomyId(result[0]['id']);
+                document.title = result[0]['name'];
+                let options = `?page=${pageNo}&${taxonomy}=${result[0]['id']}&order=${props.order}&_fields=${props.fields}`;
+    
+                return fetch(_CONFIG.domain + _CONFIG.api + _CONFIG.posts_router + options)
+            }
         }
         )
         .then(
@@ -52,7 +59,6 @@ const ListPostsInCategory = (props) => {
             (result) => {
                 setIsLoaded(true);
                 setNewsItems(result);
-
             },
             (error) => {
                 setIsLoaded(true);
@@ -63,7 +69,7 @@ const ListPostsInCategory = (props) => {
     // Effect hook!
     useEffect(() => {
         fetchData();
-    }, [slug, pageNo]);
+    }, [taxonomy, slug, pageNo]);
    
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -76,7 +82,13 @@ const ListPostsInCategory = (props) => {
         };
         return(
             <>
-                <Breadcrumb category={catId} />
+                <Breadcrumb 
+                    identity={taxonomyId} 
+                    routerName={taxonomy} 
+                    queries = {{
+                        '_fields': 'slug,name'
+                    }} 
+                />
                 <section className="list-news">
                     {newsItems.map((item) => (
                     <div key={item.id} className="news-item row">
@@ -99,30 +111,30 @@ const ListPostsInCategory = (props) => {
                 </section>
                 {/* phân trang */}
                 <div className="pagination">
-                    {pageNo > 1 && <a href={`/categories/${slug}/page/${parseInt(pageNo) - 1}`}>Prev</a>}
+                    {pageNo > 1 && <a href={`/${taxonomy}/${slug}/page/${parseInt(pageNo) - 1}`}>Prev</a>}
                     
                     {pageNumArr.map((pageNumber, index) => (
-                        <Link key={index} className={`pageNumber${pageNumber == pageNo ? ' current' : ''}`} to={`/categories/${slug}/page/${pageNumber}`}>{pageNumber}</Link>
+                        <Link key={index} className={`pageNumber${pageNumber == pageNo ? ' current' : ''}`} to={`/${taxonomy}/${slug}/page/${pageNumber}`}>{pageNumber}</Link>
                     ))}
                     
-                    {pageNo < totalPages && <a href={`/categories/${slug}/page/${parseInt(pageNo) + 1}`}>Next</a>}
+                    {pageNo < totalPages && <a href={`/${taxonomy}/${slug}/page/${parseInt(pageNo) + 1}`}>Next</a>}
                 </div>
             </>
         );
     }
 }
-ListPostsInCategory.propTypes = { 
+ListPostsByTaxonomy.propTypes = { 
     category: PropTypes.number,
     perPage: PropTypes.number,
     order: PropTypes.string,
     layout: PropTypes.number,
     fields: PropTypes.string.isRequired
   }
-  ListPostsInCategory.defaultProps = {
+  ListPostsByTaxonomy.defaultProps = {
     layout: 1,
     order: 'desc',
     perPage: 10,
     fields: 'title,link'
   };
 
-  export default ListPostsInCategory;
+  export default ListPostsByTaxonomy;

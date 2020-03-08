@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   BrowserRouter as Router,
+  Route,
+  Link,
   Switch,
-  Route
+  Redirect,
+  useLocation
 } from "react-router-dom";
 
 
@@ -13,7 +16,7 @@ import Header from './components/Header'
 import Breadcrumb from './components/Breadcrumb'
 import Main from './components/Main'
 import SecondaryLayout from './components/SecondaryLayout'
-import ListPostsInCategory from './components/ListPostsInCategory'
+import ListPostsByTaxonomy from './components/ListPostsByTaxonomy'
 import DetailArticle from './components/DetailArticle'
 import HeroImage from './components/HeroImage'
 import BigFormSearch from './components/BigFormSearch'
@@ -43,10 +46,19 @@ import stats from './assets/header_stats_bg.jpg'
   3: Kiểu layout của Các category thường
 */
 function App() {
+  const [mobileMenuOpened, SetMobileMenuOpened] = useState(false);
+
+  // LIFTING THE `MOBILE_MENU_OPENED` STATE UP!!!!!!!!!!!!!
+  
+  function HandleMobileMenuOpened(){
+    SetMobileMenuOpened(!mobileMenuOpened);
+  }
+
+
   return (
     <Router>
-      <Header />
-      <Main>
+      <Header mobileMenuOpened={mobileMenuOpened} onMobileMenuOpened={HandleMobileMenuOpened} />
+      <Main mobileMenuOpened={mobileMenuOpened} >
 
         <Switch>
 
@@ -68,7 +80,7 @@ function App() {
                     React.createElement('span', {key: 1}, 'Căn bản khác')
                 ])}
                 <SectionBody>
-                    <CategoryInfo key={1} id={39} headerImage={news} layout={2} fields={"link,name"} />
+                    <CategoryInfo testProps={false} key={1} id={39} headerImage={news} layout={2} fields={"link,name"} />
                     <CategoryInfo key={2} id={42} headerImage={think} layout={2} fields={"link,name"} />
                     <CategoryInfo key={3} id={55} headerImage={science} layout={2} fields={"link,name"} />
                     <CategoryInfo key={4} id={52} headerImage={book} layout={2} fields={"link,name"} />
@@ -78,21 +90,40 @@ function App() {
               </MainSection>
             </Route>
 
-            {/* LIST PAGE */}
-            <Route path={"/categories/:slug/:pageBase?/:pageNo?"}>
+            {/* LIST BY TAXONOMY */}
+            <Route path={"/:taxonomy/:slug/:pageBase?/:pageNo?"}>
               <SecondaryLayout 
-                content={{'mainBar': <ListPostsInCategory key={1} layout={3} fields={"id,title,slug,excerpt,jetpack_featured_media_url,date_gmt"} />,
-                          'sideBar': [<WidgetListCategories key={1} />, <WidgetListServices key={2} />]}} 
+                content={{'mainBar': <ListPostsByTaxonomy 
+                                                          key={1} 
+                                                          // layout={3} 
+                                                          fields={"id,title,slug,excerpt,jetpack_featured_media_url,date_gmt"} />,
+                          'sideBar': [<WidgetListCategories 
+                                                          key={1} 
+                                                          routerName='categories' 
+                                                          queries= {{'_fields': 'id,slug,name'}}/>, 
+                                      <WidgetListServices key={2} />]}} 
               />
+            </Route>
+
+            <Route path="/error">
+            <SecondaryLayout 
+                content={{'mainBar': <NoMatch key={1} />,
+                          'sideBar': [<WidgetListCategories key={1} routerName='categories' queries= {{'_fields': 'id,slug,name'}} />, 
+                                      <WidgetListServices key={2} />]}} 
+              />          
             </Route>
 
             {/* DETAIL PAGE */}
             <Route path={'/:articleSlug'}>
               <SecondaryLayout 
                 content={{'mainBar': <DetailArticle key={1} />,
-                          'sideBar': [<WidgetListCategories key={1} />, <WidgetListServices key={2} />]}} 
+                          'sideBar': [<WidgetListCategories key={1} routerName='categories' queries= {{'_fields': 'id,slug,name'}} />, 
+                                      <WidgetListServices key={2} />]}} 
               />
             </Route>
+
+            
+            
         </Switch>
       </Main>
       <Footer />
@@ -101,3 +132,15 @@ function App() {
 }
 
 export default App;
+
+function NoMatch() {
+  let location = useLocation();
+
+  return (
+    <div>
+      <h3>
+        Trang bị lỗi hoặc không tồn tại :(
+      </h3>
+    </div>
+  );
+}

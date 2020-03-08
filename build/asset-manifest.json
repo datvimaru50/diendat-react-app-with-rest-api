@@ -1,0 +1,37 @@
+{
+  "files": {
+    "main.css": "/static/css/main.73599d85.chunk.css",
+    "main.js": "/static/js/main.f28555da.chunk.js",
+    "main.js.map": "/static/js/main.f28555da.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.f677a97e.js",
+    "runtime-main.js.map": "/static/js/runtime-main.f677a97e.js.map",
+    "static/js/2.fe389e7e.chunk.js": "/static/js/2.fe389e7e.chunk.js",
+    "static/js/2.fe389e7e.chunk.js.map": "/static/js/2.fe389e7e.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.6e7ba8e71a39c0db80e0bf907d49b714.js": "/precache-manifest.6e7ba8e71a39c0db80e0bf907d49b714.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.73599d85.chunk.css.map": "/static/css/main.73599d85.chunk.css.map",
+    "static/js/2.fe389e7e.chunk.js.LICENSE.txt": "/static/js/2.fe389e7e.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/static/media/DvHome_1_dinhcu_bg.5277ef13.png",
+    "static/media/News_sample_1.jpg": "/static/media/News_sample_1.899a6537.jpg",
+    "static/media/black-board.jpg": "/static/media/black-board.fb5dacb7.jpg",
+    "static/media/god-bg.jpg": "/static/media/god-bg.d16dfe43.jpg",
+    "static/media/header_book_bg.jpg": "/static/media/header_book_bg.ccb90ca9.jpg",
+    "static/media/header_fun_bg.jpg": "/static/media/header_fun_bg.7e504920.jpg",
+    "static/media/header_news_bg.jpg": "/static/media/header_news_bg.ee43a8b8.jpg",
+    "static/media/header_science_bg.jpg": "/static/media/header_science_bg.f7ef39a2.jpg",
+    "static/media/header_stats_bg.jpg": "/static/media/header_stats_bg.e8eed21e.jpg",
+    "static/media/header_think_bg.jpg": "/static/media/header_think_bg.f8c90079.jpg",
+    "static/media/identity-bg.jpg": "/static/media/identity-bg.a2230325.jpg",
+    "static/media/knowledge-bg.jpg": "/static/media/knowledge-bg.3bfe9956.jpg",
+    "static/media/space-bg.jpg": "/static/media/space-bg.09183981.jpg",
+    "static/media/time-bg.jpg": "/static/media/time-bg.e92bb81d.jpg",
+    "static/media/will-bg.jpg": "/static/media/will-bg.8fc17880.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f677a97e.js",
+    "static/js/2.fe389e7e.chunk.js",
+    "static/css/main.73599d85.chunk.css",
+    "static/js/main.f28555da.chunk.js"
+  ]
+}

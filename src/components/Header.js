@@ -6,7 +6,8 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    NavLink
   } from "react-router-dom";
   
 
@@ -21,8 +22,8 @@ class Header extends React.Component {
       this.state = {
             error:null,
             isLoaded: false,
-            menu: [],
-            mobileMenuOpened: false, // check trạng thái ẩn hiện của menu mobile
+            menu: null,
+            fixedTop: false,
             mobileLangOpened: false // check trạng thái ẩn hiện của language mobile
         }
         // binding 'this' to class methods
@@ -31,9 +32,7 @@ class Header extends React.Component {
     }
 
     showMobileMenu() {
-        this.setState(state => ({
-            mobileMenuOpened: !state.mobileMenuOpened
-        }))
+        this.props.onMobileMenuOpened();
     }
     showMobileLang() {
         this.setState(state => ({
@@ -60,17 +59,16 @@ class Header extends React.Component {
   }
   render() {
     const { error, isLoaded, menu } = this.state;
-
-    // check active page, thay bằng window.location.href khi ghép toàn bộ trang
-    let urlLocation = "https://www.diendat.net/category/meta/";
-
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
+            // if (this.state.menu === null) return null
+            // sticky header
+            
             return (
-                <header className={this.state.mobileMenuOpened ? "show_main_menu" : ""}>
+                <header className={this.props.mobileMenuOpened ? "show_main_menu" : ""}>
                         <div className="hidden_menu d-md-none">
                             <div className="menu-body">
                                 <ul className="mobile-menu-list">
@@ -100,13 +98,13 @@ class Header extends React.Component {
                                 </div>
                                 <div className="col-2 col-md-7 order-md-2">
 
-                                    <span onClick={this.showMobileMenu} className={this.state.mobileMenuOpened ? "mobile-menu d-md-none opened" : "mobile-menu d-md-none"}></span>
+                                    <span onClick={this.showMobileMenu} className={this.props.mobileMenuOpened ? "mobile-menu d-md-none opened" : "mobile-menu d-md-none"}></span>
 
                                     {/* NAVIGATION MENU */}
                                     <nav className="site-menu main-menu d-none d-md-block">
                                         {menu.map((item) => (
-                                            <span key={item.id} className={item.slug == urlLocation ? "menu-item active" : "menu-item"}>
-                                                <Link className="menu-link" to={`/categories/${item.slug}`}>{item.name}</Link>
+                                            <span key={item.id} className="menu-item">
+                                                <NavLink activeClassName="active" className="menu-link" to={`/categories/${item.slug}`}>{item.name}</NavLink>
                                             </span>
                                         ))}
                                     </nav>

@@ -14,8 +14,8 @@ import PropTypes from 'prop-types';
 // import SearchResultLite from './SearchResultLite';
 
 const searchClient = algoliasearch(
-  '8I3M2VBQUJ',
-  '63f1fb12e912b3c5bcf39913103a19d1'
+  'DJ34XDBF7V',
+  '88f5d78a9430ad20cd4907b924180f95'
 );
 
 const Results = connectStateResults(
@@ -78,7 +78,7 @@ export default class BigFormSearch extends React.Component {
                     // this.state.submit &&
                     // <SearchResultLite query={this.state.input} fields={'title,url'} />
                   }
-                  <InstantSearch searchClient={searchClient} indexName="diendat_posts_search_index">
+                  <InstantSearch searchClient={searchClient} indexName="React-Theme">
 
                     <SearchBox className="search-box" translations = {{placeholder:'Search Box'}}/>
                     <Results>
